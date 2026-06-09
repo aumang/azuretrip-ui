@@ -1,28 +1,19 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
+
 import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-home-page',
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
-export class HomePage implements OnInit {
-
-  healthMessage = '';
+export class HomePage {
 
   private homeService = inject(HomeService);
 
-  ngOnInit(): void {
-
-    this.homeService.getHealth()
-      .subscribe({
-        next: response => {
-          this.healthMessage = response;
-        },
-        error: error => {
-          console.error(error);
-        }
-      });
-  }
+  healthMessage$: Observable<string> =
+    this.homeService.getHealth();
 }

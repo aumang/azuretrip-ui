@@ -50,14 +50,21 @@ export class Login {
                 user
               );
 
-              this.router.navigate(['/home']);
+              if (user.roles.includes('Admin')) {
+
+                this.router.navigate(['/admin']);
+
+              }
+              else {
+
+                this.router.navigate(['/user']);
+
+              }
             },
             error: error => {
               console.error(error);
             }
           });
-
-          this.router.navigate(['/home']);
         },
         error: error => {
           console.error(error);

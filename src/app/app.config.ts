@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
       ])),
     
     provideAppInitializer(() => {
-      inject(AppInitializerService)
+      return inject(AppInitializerService)
         .initialize();
     })
   ]

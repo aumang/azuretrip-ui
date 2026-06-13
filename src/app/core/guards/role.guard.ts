@@ -16,6 +16,7 @@ export const roleGuard =
     const user =
       authStateService.currentUser;
 
+    console.log('Role Guard User:', user);
     if (
       user &&
       user.roles.includes(requiredRole)

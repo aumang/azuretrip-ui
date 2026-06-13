@@ -4,6 +4,7 @@ import { StorageService } from './storage.service';
 import { AuthStateService } from './auth-state.service';
 
 import { AuthService } from '../../features/auth/services/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,27 +18,34 @@ export class AppInitializerService {
 
   private authStateService = inject(AuthStateService);
   
-  initialize(): void {
-    console.log('App Initializer Running');
-    const token =
-        this.storageService.getAccessToken();
+  async initialize(): Promise<void> {
 
-    if (!token) {
-        return;
-    }
+  console.log('App Initializer Running');
 
-    this.authService.getProfile()
-        .subscribe({
-        next: user => {
-            this.authStateService.setCurrentUser(
-            user
-            );
-        },
-        error: () => {
-            this.storageService.clear();
-            this.authStateService.clear();
-        }
-        });
-    }
+  const token =
+    this.storageService.getAccessToken();
+
+  if (!token) {
+    return;
+  }
+
+  try {
+
+    const user =
+      await firstValueFrom(
+        this.authService.getProfile()
+      );
+
+    this.authStateService.setCurrentUser(
+      user
+    );
+
+  }
+  catch {
+
+    this.storageService.clear();
+    this.authStateService.clear();
+  }
+}
 
 }

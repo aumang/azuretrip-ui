@@ -1,0 +1,20 @@
+@if(currentUser$ | async; as user)
+{
+  <div>
+
+    <div>
+      Welcome {{ user.displayName }}
+    </div>
+
+    <div>
+      Role: {{ user.roles[0] }}
+    </div>
+
+    <button
+      type="button"
+      (click)="logout()">
+      Logout
+    </button>
+
+  </div>
+}
